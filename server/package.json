@@ -1,0 +1,38 @@
+{
+  "name": "fullstack-auth",
+  "version": "1.0.0",
+  "description": "fullstack playground for various auth methods like JWT, sessions, cookies, various middleware solutions and more",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/FatCatCoder/fullstack-auth.git"
+  },
+  "keywords": [
+    "jwt",
+    "auth",
+    "sessions",
+    "cookies",
+    "express",
+    "react",
+    "js"
+  ],
+  "author": "fatcatcoder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FatCatCoder/fullstack-auth/issues"
+  },
+  "homepage": "https://github.com/FatCatCoder/fullstack-auth#readme",
+  "dependencies": {
+    "argon2": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.6.0"
+  }
+}
