@@ -8,8 +8,8 @@ require('dotenv').config()
 
 //routes
 
-router.get('/', jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), (req, res) => {
-    res.send('<h1>Welcome to the authorized homepage!</h1>');
+router.get('/', async(req, res) => {
+    res.send('authorized homepage');
 })
 
 router.post('/login', async(req, res) => {
@@ -21,7 +21,7 @@ router.post('/login', async(req, res) => {
         const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
 
         if (user.rows.length === 0){
-            return res.status(401).json("Email or Password is invalid");
+            return res.status(401).send("Email or Password is invalid");
         }
 
         // check pwd 
@@ -29,17 +29,17 @@ router.post('/login', async(req, res) => {
         const validatePwd = await argon2.verify(user.rows[0].user_password, password);
 
         if (!validatePwd){
-            return res.status(401).json("Email or Password is invalid");
+            return res.status(401).send("Email or Password is invalid");
         }
 
         // give jwt token
-        const token = jwtGenerator(user.rows[0].user_id);
-        res.json({ token });
+        const token = 'Bearer ' + jwtGenerator(user.rows[0].user_id);
+        res.set('Authorization', token).send();
 
 
     } 
     catch (error) {
-        console.error(error.message);
+        console.error('login error', error.message);
         res.status(500).send("server error"); 
     }
 })
@@ -61,12 +61,23 @@ router.post('/register', async(req, res) => {
         const newUser = await pool.query("INSERT INTO users(user_name, user_email, user_password) VALUES($1, $2, $3) RETURNING *", [name, email, hash]);
 
         // generate jwt or just redirect to login
-        const token = jwtGenerator(newUser.rows[0].user_id);
-        res.json({ token });
+        const token = await 'Bearer ' + jwtGenerator(newUser.rows[0].user_id);
+        res.set('Authorization', token).send();
     } 
     catch (error) {
         console.error(error.message);
         res.status(500).send("server error");  
+    }
+})
+// jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']})
+router.get("/verify-auth", jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']}), async(req, res) => {
+    try {
+        console.log('verify-auth good');
+        res.json({"verified": true});
+    } catch (error) {
+        console.log('verify-auth error');
+        console.error(error.message);
+        res.status(500).json({"verified": false});
     }
 })
 
