@@ -44,4 +44,8 @@ To keep it simple.
 To make it elegant.
 [bootstrap](https://github.com/twbs/bootstrap)
 
+### js-cookies
+To gain access to cookies simply
+[js-cookies](https://github.com/js-cookie/js-cookie)
+
 ### ... and future libraries

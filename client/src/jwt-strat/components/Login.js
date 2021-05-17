@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {Link} from 'react-router-dom';
-import Cookies from 'js-cookies';
 
 function Login({ setAuth }) {
   const [inputs, setInputs] = useState({
@@ -25,13 +24,12 @@ function Login({ setAuth }) {
         body: JSON.stringify(body)
       })
 
-      const parseRes = response;
-      const myCookie = Cookies.getItem('session');
-      console.log(parseRes, myCookie);
-      if(parseRes.status !== 200 || parseRes.ok !== true){
-        return console.log('bad response login')
+      const parseRes = response.headers.get('Authorization');
+
+      if (parseRes !== null){
+        localStorage.setItem('Authorization', parseRes);
+        setAuth(true);
       }
-      setAuth(true);
 
     } 
     catch (error) {
@@ -49,7 +47,7 @@ function Login({ setAuth }) {
       </form>
       <div className="text-muted row col-4 mx-auto my-5">
         <p>Need to make an account?</p>
-        <Link className="btn btn-secondary col-4 col-lg-3 mx-auto" to="/register">Register</Link>
+        <Link className="btn btn-secondary col-3 mx-auto" to="/register">Register</Link>
       </div>
     </>
   );

@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const pool = require('../db');
+const pool = require('../../db');
 const argon2 = require('argon2');
 const jwtGenerator = require('../utils/jwtGenerator');
 const jwtValidate = require('express-jwt');
-require('dotenv').config()
+require('dotenv').config({ path: '../../.env' })
 
 
 //routes
