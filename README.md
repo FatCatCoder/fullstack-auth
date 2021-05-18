@@ -3,49 +3,82 @@ A playground for authentication and authorization
 
 ## Using...
 
-### express
+### [express](https://github.com/expressjs/express)
 because its simple.
-[express](https://github.com/expressjs/express)
 
-### cors
+
+### [cors](https://github.com/expressjs/cors)
 to deal with that pesky cors stuff...
-[cors](https://github.com/expressjs/cors)
 
-### jsonwebtoken
+
+### [JWT](https://github.com/auth0/node-jsonwebtoken)
 create web tokens
-[JWT](https://github.com/auth0/node-jsonwebtoken)
 
-### express-jwt
+
+### [express-jwt](https://github.com/auth0/express-jwt)
 a better authentication for JWT than ryo.
-[express-jwt](https://github.com/auth0/express-jwt)
 
-### dotenv
+
+### dotenv[dotenv](https://github.com/motdotla/dotenv)
 for using env config variables
-[dotenv](https://github.com/motdotla/dotenv)
 
-### helmet
+
+### [helmet](https://github.com/helmetjs/helmet)
 because it's better to be safe
-[helmet](https://github.com/helmetjs/helmet)
 
-### pg
+
+### [pg](https://github.com/brianc/node-postgres)
 postgresql database in node.js
-[pg](https://github.com/brianc/node-postgres)
 
-### argon2
+
+### [argon2](https://github.com/ranisalt/node-argon2)
 keep it secret, keep it safe as they say... so use argon2id
 award winning hash algorithm over bcrypt for your passwords.
-[argon2](https://github.com/ranisalt/node-argon2)
 
-### react
+
+### [react](https://github.com/facebook/react)
 To keep it simple.
-[react](https://github.com/facebook/react)
 
-### bootstrap
+
+### [bootstrap](https://github.com/twbs/bootstrap)
 To make it elegant.
-[bootstrap](https://github.com/twbs/bootstrap)
 
-### js-cookies
+
+### [js-cookies](https://github.com/js-cookie/js-cookie)
 To gain access to cookies simply
-[js-cookies](https://github.com/js-cookie/js-cookie)
+
 
 ### ... and future libraries
+
+# Get Started
+
+To use this project pick a strategy and run the scripts for bother server and client.
+###### set .env with a secret key and pg credentials. 
+
+## JWT
+
+### Client
+
+#### npm run start
+
+cd into client and npm run start
+
+### Server
+
+#### npm run jwt-strat
+
+
+
+## Sessions
+
+### Client
+
+#### npm run start
+
+cd into client and npm run start
+
+### Server
+
+#### npm run sesh-strat
+
+cd into server and npm run sesh-strat

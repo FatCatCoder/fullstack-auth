@@ -60,10 +60,6 @@ router.get('/', restrict, async(req, res) => {
     res.send('auth home');
 })
 
-router.get('/login', (req, res) => {
-    res.send('<form action="/login" method="POST">email<input type="text" name="email">password<input type="password" name="password"><input type="submit" value="Submit"></form>');
-})
-
 router.post('/login', async(req, res) => {
     try {
         // destructor req.body
@@ -115,7 +111,7 @@ router.get('/logout', restrict, (req, res) => {
 })
 
 
-/*
+
 router.post('/register', async(req, res) => {
     try {
         // destructor req.body
@@ -133,22 +129,13 @@ router.post('/register', async(req, res) => {
         const newUser = await pool.query("INSERT INTO users(user_name, user_email, user_password) VALUES($1, $2, $3) RETURNING *", [name, email, hash]);
 
         // cookie
-        res.send('registered');
+        res.status(200);
     } 
     catch (error) {
         console.error(error.message);
         res.status(500).send("server error");  
     }
 })
-
-*/
-
-
-
-// jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']})
-
-  
-  
 
 
 module.exports = router;
