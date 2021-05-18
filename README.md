@@ -19,7 +19,7 @@ create web tokens
 a better authentication for JWT than ryo.
 
 
-### dotenv[dotenv](https://github.com/motdotla/dotenv)
+### [dotenv](https://github.com/motdotla/dotenv)
 for using env config variables
 
 
