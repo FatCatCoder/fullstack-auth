@@ -6,17 +6,32 @@ const session  = require('express-session');
 const uuid = require('uuid');
 const path = require('path');
 
+const redis = require('redis')
+let RedisStore = require('connect-redis')(session)
+let redisClient = redis.createClient({
+    host: 'localhost',
+    port: 6379
+})
+
 require('dotenv').config({ path: '../../.env' })
 
     // middleware //
 
 router.use(session({
     secret: process.env.SECRET,
+    store: new RedisStore({ client: redisClient }),
     resave: false,
     saveUninitialized: true,
     cookie: { httpOnly: false, secure: false, sameSite: false},
     name: 'session'
 }))
+
+router.use((req, res, next) => {
+    if(!req.session){
+        return next(new Error('oh no, an error with the server, might be redis...'))
+    }
+    next()
+})
 
 //verify auth
 router.get("/verify-auth", async(req, res) => {
@@ -115,7 +130,7 @@ router.get('/logout', restrict, (req, res) => {
 })
 
 
-/*
+
 router.post('/register', async(req, res) => {
     try {
         // destructor req.body
@@ -124,30 +139,22 @@ router.post('/register', async(req, res) => {
         // check if exists, ensures unique name and email
         const user = await pool.query("SELECT * FROM users WHERE user_name = $1 OR user_email = $2", [name, email])
         if (user.rows.length !== 0){
-            return res.status(401).send('User Exists!');
+            return res.status(401).json({"errorMsg":'User Exists!'});
         }
         // argon2id hash the password
         const hash = await argon2.hash(password, {type: argon2.argon2id});
 
-        //add new user to db
+        // add new user to db
         const newUser = await pool.query("INSERT INTO users(user_name, user_email, user_password) VALUES($1, $2, $3) RETURNING *", [name, email, hash]);
 
-        // cookie
-        res.send('registered');
+        // cookie send
+        res.redirect('/login');
     } 
     catch (error) {
         console.error(error.message);
-        res.status(500).send("server error");  
+        res.status(500).send("server register error");  
     }
 })
-
-*/
-
-
-
-// jwtValidate({secret: process.env.SECRET, algorithms: ['HS256']})
-
-  
   
 
 

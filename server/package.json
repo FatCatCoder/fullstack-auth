@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "jwt-strat": "nodemon C:/Users/christian/projects/fullstack-auth/server/jwt-strat/index.js",
-    "cookie-sesh-strat": "nodemon C:/Users/christian/projects/fullstack-auth/server/cookie-sesh-strat/index.js"
+    "sesh": "nodemon /Users/christianclaudeauex/Projects/fullstack-auth/server/cookie-sesh-strat/index.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
   "dependencies": {
     "argon2": "^0.27.2",
     "connect-pg-simple": "^6.2.1",
+    "connect-redis": "^5.2.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
@@ -39,6 +40,7 @@
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
+    "redis": "^3.1.2",
     "uuid": "^8.3.2"
   }
 }

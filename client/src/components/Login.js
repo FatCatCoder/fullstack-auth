@@ -27,7 +27,7 @@ function Login({ setAuth }) {
 
       const parseRes = response;
       const myCookie = Cookies.getItem('session');
-      console.log(parseRes, myCookie);
+
       if(parseRes.status !== 200 || parseRes.ok !== true){
         return console.log('bad response login')
       }

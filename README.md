@@ -48,4 +48,8 @@ To make it elegant.
 To gain access to cookies simply
 [js-cookies](https://github.com/js-cookie/js-cookie)
 
+### redis
+
+### connect-redis
+
 ### ... and future libraries

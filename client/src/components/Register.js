@@ -8,6 +8,8 @@ function Register({ setAuth }) {
     name: ""
   });
 
+  const [error, setError] = useState();
+
   const {email, password, name} = inputs;
 
   const onchange = (e) => {
@@ -26,12 +28,18 @@ function Register({ setAuth }) {
         body: JSON.stringify(body)
       })
 
-      // get auth header and check if valid
-      const parseRes = response.headers.get('Authorization');
-      if (parseRes !== null){
-        localStorage.setItem('Authorization', parseRes);
-        setAuth(true);
+      // check server for okay, if not send error logs and msg
+      const parseRes = await response.json();
+      if (response.status === 401){
+        console.log(response.status, response.statusText, parseRes.errorMsg)
+        return setError(parseRes.errorMsg);
       }
+      else if(parseRes !== 200){
+        console.log(response.status, response.statusText)
+        return setError({"errorMsg": response.statusText});
+      }
+      // okay!
+      setAuth(true);
 
     } 
     catch (error) {
@@ -43,10 +51,11 @@ function Register({ setAuth }) {
     <>
       <h1 className="display-1">Register</h1>
       <form className="col-4 mx-auto" onSubmit={onSubmitForm}>
+        <input type="text" name="name" placeholder="name" value={name} onChange={e => onchange(e)} className="form-control my-3" required/>
         <input type="text" name="email" placeholder="email" value={email} onChange={e => onchange(e)} className="form-control my-3" pattern="\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b" required/>
         <input type="password" name="password" placeholder="password" value={password} onChange={e => onchange(e)} className="form-control my-3" required/>
-        <input type="text" name="name" placeholder="name" value={name} onChange={e => onchange(e)} className="form-control my-3" required/>
         <button className="btn btn-secondary col-12" type="submit">Register</button>
+        {error && <div className="text-danger pt-4">{error}</div>}
       </form>
       <div className="text-muted row col-4 mx-auto my-5">
         <p>Already have an account?</p>
