@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../../.env' })
 const router = require('express').Router();
 const pool = require('../../db');
 const argon2 = require('argon2');
@@ -5,21 +6,32 @@ const cookieSesh = require('cookie-session');
 const session  = require('express-session');
 const uuid = require('uuid');
 const path = require('path');
+const cookieParser = require('cookie-parser')
 
-require('dotenv').config({ path: '../../.env' })
+// uncomment for redis store
+// const connectRedisStore = require('connect-redis')(session)
+// const { createClient } = require('redis');
+// const client = createClient();
+// const store = new connectRedisStore({client: client})
 
-    // middleware //
+
+// -- middleware -- //
+
+router.use(cookieParser())
 
 router.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { httpOnly: false, secure: false, sameSite: false},
-    name: 'session'
+    name: 'session',
+    //store: store
 }))
 
-//verify auth
+// verify auth
 router.get("/verify-auth", async(req, res) => {
+    console.log('Cookies: ', req.cookies)
+
     try {
         if(req.session.userId){
         console.log('verify-auth good');
@@ -35,28 +47,17 @@ router.get("/verify-auth", async(req, res) => {
 
 // restrict routes
 function restrict(req, res, next) {
-    console.log('try restrict');
-    console.log(req.session);
-    if (req.session.userId) {
-        console.log('try restrict good');
-      next();
-    } else {
+    if (req.session.userId) { next() } 
+    else {
         console.log('try restrict bad');
         req.session.error = 'Access denied!';
-      //res.send('unauth');
     }
-  }
+}
 
 
-
-
-
-
-
-    // routes //
+// -- routes -- //
 
 router.get('/', restrict, async(req, res) => {
-    console.log('home');
     res.send('auth home');
 })
 
@@ -75,7 +76,6 @@ router.post('/login', async(req, res) => {
         }
 
         // check pwd 
-
         const validatePwd = await argon2.verify(user.rows[0].user_password, password);
 
         if (!validatePwd){
@@ -89,13 +89,11 @@ router.post('/login', async(req, res) => {
         //req.session.regenerate(() => {
         req.session.userId = user.rows[0].user_id;       
         //})
-        res.redirect('/');
-        //.send('now auth');
+        res.send('now auth');
         
 
     } 
     catch (error) {
-        console.log('error in login');
         console.error('login error', error.message);
         res.status(500).send("server login error"); 
     }
